@@ -670,6 +670,7 @@ SineWaves.prototype.drawWave = function(time, options) {
 
   var i;
   var point;
+  var pointNext;
 
   for (i = 0; i < this.waveWidth; i += options.segmentLength) {
     // Calculate where the next point is
@@ -677,14 +678,22 @@ SineWaves.prototype.drawWave = function(time, options) {
 
     // Draw to it
     this.ctx.lineTo(point.x, point.y);
-
+    pointNext = this.getPoint(time, i+options.segmentLength, options);
+    var c = (point.x + pointNext.x) / 2;
+    var d = (point.y + pointNext.y) / 2;
+    this.ctx.quadraticCurveTo(point.x, pointNext.y, c, d);
     // Clean up
     point = void 0;
   }
-
+  console.log (options.timeModifier/10)
+  var op = options.timeModifier/10;
+  this.ctx.fillStyle = "rgba(187, 234, 255, "+op+")";
+  this.ctx.fill();
   // Clean  up
   i = void 0;
   options = void 0;
+  // this.ctx.lineTo(-opt.range.x - opt.thickness, ch + opt.thickness);
+  // this.ctx.lineTo(cw + opt.range.x + opt.thickness, ch + opt.thickness)
 
   // Ending Line
   this.ctx.lineTo(this.width, this.yAxis);
